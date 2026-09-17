@@ -55,7 +55,7 @@ echo "🗜️ Creating Disk Image (DMG)..."
 DMG_STAGING="dmg_staging"
 rm -rf "$DMG_STAGING"
 mkdir -p "$DMG_STAGING"
-mv "$APP_DIR" "$DMG_STAGING/"
+cp -R "$APP_DIR" "$DMG_STAGING/"
 ln -s /Applications "$DMG_STAGING/Applications"
 
 hdiutil create -volname ezlyrics -srcfolder "$DMG_STAGING" -ov -format UDZO "ezlyrics-v${VERSION}.dmg"

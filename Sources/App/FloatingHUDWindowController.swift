@@ -21,6 +21,9 @@ class HUDPanel: NSPanel {
             newOrigin.x += (event.locationInWindow.x - initial.x)
             newOrigin.y += (event.locationInWindow.y - initial.y)
             self.setFrameOrigin(newOrigin)
+            if SettingsManager.shared.overlayPosition != "custom" {
+                SettingsManager.shared.overlayPosition = "custom"
+            }
         } else if event.type == .leftMouseUp {
             initialLocation = nil
             self.saveFrame(usingName: "OverlayWindow")
@@ -62,7 +65,10 @@ class FloatingHUDWindowController: NSWindowController {
     }
     
     func showHUD() {
-        if let window = window {
+        guard let window = window else { return }
+        let position = SettingsManager.shared.overlayPosition
+
+        if position == "custom" {
             if !window.setFrameUsingName("OverlayWindow") {
                 if let screen = NSScreen.main {
                     let frame = window.frame
@@ -70,11 +76,40 @@ class FloatingHUDWindowController: NSWindowController {
                     window.setFrameOrigin(NSPoint(x: screenFrame.midX - frame.width / 2, y: screenFrame.maxY - frame.height - 50))
                 }
             }
+        } else if let screen = NSScreen.main {
+            window.setFrameOrigin(Self.origin(for: position, windowFrame: window.frame, screenFrame: screen.visibleFrame))
         }
-        window?.orderFront(nil)
+
+        window.orderFront(nil)
     }
-    
+
     func hideHUD() {
         window?.orderOut(nil)
+    }
+
+    private static func origin(for position: String, windowFrame: NSRect, screenFrame: NSRect) -> NSPoint {
+        let margin: CGFloat = 20
+        let topOffset: CGFloat = 50
+
+        let minX = screenFrame.minX + margin
+        let maxX = screenFrame.maxX - windowFrame.width - margin
+        let centerX = screenFrame.midX - windowFrame.width / 2
+
+        let topY = screenFrame.maxY - windowFrame.height - topOffset
+        let bottomY = screenFrame.minY + margin
+        let centerY = screenFrame.midY - windowFrame.height / 2
+
+        switch position {
+        case "topLeft": return NSPoint(x: minX, y: topY)
+        case "topCenter": return NSPoint(x: centerX, y: topY)
+        case "topRight": return NSPoint(x: maxX, y: topY)
+        case "centerLeft": return NSPoint(x: minX, y: centerY)
+        case "center": return NSPoint(x: centerX, y: centerY)
+        case "centerRight": return NSPoint(x: maxX, y: centerY)
+        case "bottomLeft": return NSPoint(x: minX, y: bottomY)
+        case "bottomCenter": return NSPoint(x: centerX, y: bottomY)
+        case "bottomRight": return NSPoint(x: maxX, y: bottomY)
+        default: return NSPoint(x: centerX, y: topY)
+        }
     }
 }

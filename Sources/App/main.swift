@@ -123,10 +123,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         self.syncEngine.currentLyrics = parsed
                     } else {
                         print("Failed to fetch lyrics: No lyrics found in search results.")
+                        NotFoundLogger.shared.log(artist: track.artist, title: track.title, reason: "no_search_results")
                         self.syncEngine.currentLyrics = ParsedLyrics(trackName: track.title, artistName: track.artist, isSynced: false, lines: [], detectedLanguage: nil)
                     }
                 } catch {
                     print("Failed to fetch lyrics via search: \(error)")
+                    NotFoundLogger.shared.log(artist: track.artist, title: track.title, reason: "search_error: \(error)")
                     self.syncEngine.currentLyrics = ParsedLyrics(trackName: track.title, artistName: track.artist, isSynced: false, lines: [], detectedLanguage: nil)
                 }
             }

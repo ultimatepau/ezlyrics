@@ -21,4 +21,5 @@ class SettingsManager: ObservableObject, @unchecked Sendable {
     @AppStorage("alignment") var alignment: String = "center"
     @AppStorage("lineLayout") var lineLayout: String = "two"
     @AppStorage("showTimestampsInMenu") var showTimestampsInMenu: Bool = false
+    @AppStorage("overlayPosition") var overlayPosition: String = "custom"
 }

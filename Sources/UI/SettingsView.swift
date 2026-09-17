@@ -62,10 +62,36 @@ struct SettingsView: View {
                     .foregroundColor(.secondary)
                     .padding(.bottom, 4)
             }
-            
+
             Divider()
                 .padding(.vertical, 8)
-            
+
+            Section {
+                Picker("Screen Position", selection: $settings.overlayPosition) {
+                    Text("Custom (Drag to Position)").tag("custom")
+                    Divider()
+                    Text("Top Left").tag("topLeft")
+                    Text("Top Center").tag("topCenter")
+                    Text("Top Right").tag("topRight")
+                    Divider()
+                    Text("Center Left").tag("centerLeft")
+                    Text("Center").tag("center")
+                    Text("Center Right").tag("centerRight")
+                    Divider()
+                    Text("Bottom Left").tag("bottomLeft")
+                    Text("Bottom Center").tag("bottomCenter")
+                    Text("Bottom Right").tag("bottomRight")
+                }
+            } header: {
+                Text("Position Options")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+                    .padding(.bottom, 4)
+            }
+
+            Divider()
+                .padding(.vertical, 8)
+
             Section {
                 Toggle("Show Background", isOn: $settings.showBackground)
                 

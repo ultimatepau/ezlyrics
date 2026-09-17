@@ -43,6 +43,23 @@ struct LyricsOverlayView: View {
         default: return .center
         }
     }
+
+    // Anchors the lyric bubble within the (fixed-size) overlay window so it
+    // visually hugs whichever screen edge the chosen position implies.
+    private var contentFrameAlignment: Alignment {
+        switch settings.overlayPosition {
+        case "topLeft": return .topLeading
+        case "topCenter": return .top
+        case "topRight": return .topTrailing
+        case "centerLeft": return .leading
+        case "center": return .center
+        case "centerRight": return .trailing
+        case "bottomLeft": return .bottomLeading
+        case "bottomCenter": return .bottom
+        case "bottomRight": return .bottomTrailing
+        default: return .center
+        }
+    }
     
     var body: some View {
         VStack(alignment: stackAlignment, spacing: 8) {
@@ -157,7 +174,7 @@ struct LyricsOverlayView: View {
                 }
             }
         )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: contentFrameAlignment)
         .contentShape(Rectangle()) // Make the transparent part clickable for dragging
         .applyBatchTranslation(lines: syncEngine.currentLyrics?.lines ?? [], detectedLanguage: syncEngine.currentLyrics?.detectedLanguage, isEnabled: settings.enableTranslation && settings.translationDisplayMode != "fullLyricsOnly", sourceLanguage: settings.translationSource, targetLanguage: settings.translationTarget, translatedLines: $translatedLines)
     }
