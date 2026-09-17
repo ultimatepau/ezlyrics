@@ -136,12 +136,20 @@ class MediaRemoteWrapper: @unchecked Sendable {
                 if !prefixStr.isEmpty {
                     artist = prefixStr
                 }
+            } else if let topicRegex = try? NSRegularExpression(pattern: "(?i)^(.*?)\\s*-\\s*topic\\s+(.+)$"),
+                      let topicMatch = topicRegex.firstMatch(in: title, range: NSRange(title.startIndex..., in: title)),
+                      let artistRange = Range(topicMatch.range(at: 1), in: title),
+                      let titleRange = Range(topicMatch.range(at: 2), in: title) {
+                // YouTube auto-generated "Artist - Topic" channels glue the channel
+                // suffix onto the title, e.g. "For Revenge - Topic Sadrah"
+                artist = String(title[artistRange]).trimmingCharacters(in: .whitespacesAndNewlines)
+                title = String(title[titleRange]).trimmingCharacters(in: .whitespacesAndNewlines)
             } else if title.contains(" - ") {
                 let titleParts = title.components(separatedBy: " - ")
                 if titleParts.count >= 2 {
                     let firstPart = titleParts[0].trimmingCharacters(in: .whitespacesAndNewlines)
                     let secondPart = titleParts.dropFirst().joined(separator: " - ").trimmingCharacters(in: .whitespacesAndNewlines)
-                    
+
                     // Always use the title split as the source of truth for Artist and Title when available
                     // Because YouTube channel names are often networks or have "VEVO" appended
                     artist = firstPart

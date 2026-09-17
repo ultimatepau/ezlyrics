@@ -8,7 +8,7 @@ A simple, floating lyrics widget for macOS. It detects what you're playing (Spot
 
 ## Features
 - **Auto-detection**: Just play a song. No manual search needed.
-- **Draggable & Customizable**: Put the widget anywhere (it remembers its position!). Tweak fonts, sizes, text/background colors, and layouts from a dedicated Settings window.
+- **Draggable & Customizable**: Put the widget anywhere (it remembers its position!), or snap it to a preset screen position (top/center/bottom, left/center/right) from Settings. Tweak fonts, sizes, text/background colors, and layouts from a dedicated Settings window.
 - **Karaoke Sync**: Real-time line-by-line lyric tracking with a smooth karaoke-style wipe effect.
 - **Auto-Romanization**: Automatically detects non-Latin lyrics (Japanese, Korean, Chinese, Cyrillic, etc.) and converts them to Latin script (Romaji, Pinyin, etc.) so you can easily sing along. Choose to display them on the floating overlay, the full lyrics menu, or both.
 - **Native Translation**: Uses macOS 15+ built-in neural translation to intelligently translate lyrics on the fly. Configure translations to appear on the floating overlay, the full lyrics menu, or both.
